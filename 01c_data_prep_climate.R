@@ -18,7 +18,7 @@ def.list <- def.list[19:37] # Don't know why, but don't use double brackets to d
 defz <- stack(def.list)
 
 # Process with EVI (may already be loaded)
-EVI <- raster("D:/Shared/BackedUp/Caitlin/NW CASC/Dir/EVI.for.xfire.tif")
+EVI <- stack("D:/Shared/BackedUp/Caitlin/NW CASC/Dir/EVI.for.xfire.tif")
 # crs already matches!
 identical(crs(DEFZ), crs(EVI))
 
@@ -36,6 +36,10 @@ defz.fin <- mask(defz.crop.rsmp, EVI[[1]])
 plot(EVI[[1]])
 plot(defz.fin[[1]])
 
+# Save jic
+writeRaster(defz.fin, "D:/Shared/BackedUp/Caitlin/NW CASC/Dir/defz.fin.tif")
+defz.fin <- raster("D:/Shared/BackedUp/Caitlin/NW CASC/Dir/defz.fin.tif")
+
 # Reclassify. Use 0.5 as drought bounds
 hist(defz.fin[[1]])
 # v wet: -Inf to -1 --> -2
@@ -48,11 +52,7 @@ drought <- reclassify(defz.fin, c(-Inf, -1, -2,
                                   -0.5, 0.5, 0,
                                   0.5, 1, 1,
                                   1, Inf, 2))
-plot(drought[[14]])
+plot(drought[[13]])
 
+writeRaster(drought, "D:/Shared/BackedUp/Caitlin/NW CASC/Dir/drought.tif")
 
-
-
-
-
-drought <- reclassify(spei, c(-Inf, -1, 1, -1, Inf, 0))
